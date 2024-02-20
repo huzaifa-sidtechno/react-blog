@@ -14,6 +14,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Blog related routes
     Route::post('/create-blog', [BlogController::class, 'store']);
+    Route::post('/update-blog', [BlogController::class, 'update']);
     Route::get('/blog/{id?}', [BlogController::class, 'index']);
 });
 

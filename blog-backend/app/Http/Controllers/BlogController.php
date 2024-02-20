@@ -18,7 +18,8 @@ class BlogController extends Controller
 
             if ($blog) {
                 // Assuming 'public' disk is used and 'blog_images' is a directory in storage/app/public
-                $blog->image = Storage::disk('public')->url('blog_images/' . $blog->image);
+
+                $blog->image = asset('blog_images/' . $blog->image);
 
                 // Calculate elapsed time
                 $elapsedTime = $blog->created_at->diffForHumans();
@@ -33,7 +34,7 @@ class BlogController extends Controller
 
             $blogs->transform(function ($blog) {
                 // Assuming 'public' disk is used and 'blog_images' is a directory in storage/app/public
-                $blog->image = Storage::disk('public')->url('blog_images/' . $blog->image);
+                $blog->image = asset('blog_images/' . $blog->image);
 
                 // Calculate elapsed time
                 $elapsedTime = $blog->created_at->diffForHumans();
@@ -61,9 +62,11 @@ class BlogController extends Controller
 
         // Handle file upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/blog_images');
-            $image = basename($imagePath);
+            $imageName = $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('blog_images'), $imageName);
+            $image = $imageName;
         }
+
 
         $blog = new Blog();
         $blog->title = $request->title;
@@ -74,5 +77,31 @@ class BlogController extends Controller
         $blog->save();
 
         return response()->json(['message' => 'Blog post created successfully', 'blog' => $blog], 201);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'status' => 'required',
+            'id' => 'required',
+        ]);
+        $user = Auth::guard('sanctum')->user();
+
+        $blog = Blog::find($request->id);
+        if ($request->hasFile('image')) {
+            $imageName = $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('blog_images'), $imageName);
+            $image = $imageName;
+            $blog->image = $image ?? ''; // Store the image name or path
+        }
+        $blog->title = $request->title;
+        $blog->content = $request->content;
+        $blog->status = $request->status;
+        $blog->user_id = $user->id;
+        $blog->update();
+
+        return response()->json(['message' => 'Blog post updated successfully', 'blog' => $blog], 201);
     }
 }

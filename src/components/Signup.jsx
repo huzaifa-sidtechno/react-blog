@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { login } from '../store/AuthSlice'; // Adjust the import path based on your project structure
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,19 +15,21 @@ const Signup = () => {
     formState: { errors }
   } = useForm();
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   // Function to handle form submission
   const signup = async (data) => {
-    setError(""); 
+    setError("");
     console.log(data); // For debugging purposes
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/register", data);
-      localStorage.clear(); 
-      localStorage.setItem('userData', response.data.user);
+      localStorage.clear();
+      localStorage.setItem('userData', JSON.stringify(response.data.user));
       localStorage.setItem('userToken', response.data.access_token);
-      dispatch(login({ user: response.data.user, access_token: response.data.access_token })); 
-      navigate('/home'); // Redirect to dashboard or any intended page
+      dispatch(login({ user: response.data.user, access_token: response.data.access_token }));
+      navigate('/'); // Redirect to dashboard or any intended page
     } catch (error) {
+      console.log(error)
       setError(error.response?.data?.message || "An error occurred during registration.");
     }
   };

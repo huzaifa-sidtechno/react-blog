@@ -8,6 +8,7 @@ import Home from './components/Home';
 import About from './components/About';
 import BlogPost from './components/BlogPost';
 import SingelBlog from './components/SingelBlog';
+import EditBlogPost from './components/EditBlogPost';
 import { useDispatch } from 'react-redux';
 import { login,logout } from './store/AuthSlice'; // Adjust the import path based on your project structure
 
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/blog/:id" element={<SingelBlog />} />
+          <Route path="/blog-edit/:id" element={<EditBlogPost />} />
           {token ? (<>
             <Route path="/blog-post" element={<BlogPost />} /></>) : (<><Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />

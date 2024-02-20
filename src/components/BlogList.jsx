@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const BlogList = () => {
   // State to store fetched posts
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
   const userData =  localStorage.getItem('userData');
   const userInfo = JSON.parse(userData);
   useEffect(() => {
@@ -19,7 +20,7 @@ const BlogList = () => {
         });  
         setPosts(response.data.data); // Adjust based on the actual structure
       } catch (error) {
-        console.error("Failed to fetch posts:", error);
+        setError(error.response?.data?.message || "An error occurred.");
       }
     };
     getPosts();
@@ -29,6 +30,7 @@ const BlogList = () => {
 
   return (
     <>
+    {error && <div className="alert alert-danger" role="alert">{error}</div>}
       {posts.map((post, index) => (
         <div key={index} className="col-md-4 mb-4">
           <div className="card" style={{ width: '18rem' }}>
@@ -39,7 +41,7 @@ const BlogList = () => {
               <Link to={`/blog/${post?.id}`} className="btn btn-primary">
                 Read more
               </Link>  
-              {userInfo.id == post?.user_id && <><Link to={`/blog/${post?.id}`} className="btn btn-success mx-2">
+              {userInfo.id == post?.user_id && <><Link to={`/blog-edit/${post?.id}`} className="btn btn-success mx-2">
                 Edit
               </Link></>}
             </div>
