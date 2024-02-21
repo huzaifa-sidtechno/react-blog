@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'; // Adjust the import based on your setup
 import { login } from '../store/AuthSlice'; // Adjust the import path based on your project structure
 
 function Login() {
@@ -11,8 +11,13 @@ function Login() {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [error, setError] = useState("");
+  const userToken = localStorage.getItem('userToken'); // Check for existing token
 
-  useEffect(() => {} , [])
+  useEffect(() => {
+    if (userToken) {
+      navigate('/');
+    }
+  }, [navigate, userToken]);
 
   const loginHandler = async (data) => {
     setError("");
@@ -20,7 +25,7 @@ function Login() {
       const response = await axios.post("http://127.0.0.1:8000/api/login", data);
       localStorage.setItem('userData', JSON.stringify(response.data.user));
       localStorage.setItem('userToken', response.data.access_token);
-      dispatch(login({ user: response.data.user, access_token: response.data.access_token })); // Ensure this matches your API response structure
+      dispatch(login({ user: response.data.user, access_token: response.data.access_token }));
       navigate('/');
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred during login.");

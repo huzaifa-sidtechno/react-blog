@@ -9,25 +9,25 @@ import About from './components/About';
 import BlogPost from './components/BlogPost';
 import SingelBlog from './components/SingelBlog';
 import EditBlogPost from './components/EditBlogPost';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login,logout } from './store/AuthSlice'; // Adjust the import path based on your project structure
 
 
 const App = () => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn); // Correct usage of useSelector
 
   useEffect(() => {
     const userData = localStorage.getItem('userData');
     const userToken = localStorage.getItem('userToken');
 
-    // if (userData && userToken) {
+    // Dispatch login action if userData and userToken exist in localStorage
+    if (userData && userToken && !isLoggedIn) { // Check if user is not already logged in
         dispatch(login({ user: JSON.parse(userData), access_token: userToken }));
-    // }
-    
-}, [dispatch]);
+      }
+    }, [dispatch, isLoggedIn]);
 
-
-  const token = localStorage.getItem('userToken');
+  const token = useSelector(state => state.user.userToken); // Correct usage of useSelector
   return (
     <BrowserRouter>
       <div>

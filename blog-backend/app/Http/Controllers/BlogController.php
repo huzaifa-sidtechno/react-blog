@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -103,5 +104,14 @@ class BlogController extends Controller
         $blog->update();
 
         return response()->json(['message' => 'Blog post updated successfully', 'blog' => $blog], 201);
+    }
+
+    public function delete($id = null){
+        if($id){
+            $blog = Blog::find($id);
+            $blog->delete();
+            $comment = Comment::where('blog_id' , $id)->delete();
+            return response()->json(['message'=> 'blog deleted successfully']);
+        }
     }
 }

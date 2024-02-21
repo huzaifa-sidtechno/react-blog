@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BlogList from './BlogList';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
-  const userInfo = useSelector((state) => state.user);
+  const [data,setData] = useState('')
+  
   const token = localStorage.getItem('userToken');
 
   return (

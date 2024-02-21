@@ -16,6 +16,7 @@ const EditBlogPost = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      
       const token = localStorage.getItem('userToken');
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/blog/${id}`, {
