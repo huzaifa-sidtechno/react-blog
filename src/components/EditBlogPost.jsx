@@ -89,6 +89,7 @@ const EditBlogPost = () => {
           {errors.image && <p className="text-danger">{errors.image.message}</p>}
         </div>
         <div className="mb-3 form-check">
+          
           <Controller
             name="status"
             control={control}

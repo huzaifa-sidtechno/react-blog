@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -33,6 +33,13 @@ const Signup = () => {
       setError(error.response?.data?.message || "An error occurred during registration.");
     }
   };
+  const userToken = localStorage.getItem('userToken'); // Check for existing token
+
+  useEffect(() => {
+    if (userToken) {
+      navigate('/');
+    }
+  }, [navigate, userToken]);
 
   // Watch the password value to validate the confirmation
   const password = watch("password");

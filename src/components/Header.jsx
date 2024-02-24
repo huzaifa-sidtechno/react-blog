@@ -9,7 +9,7 @@ const Header = () => {
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.clear();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
