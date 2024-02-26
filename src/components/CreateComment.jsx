@@ -28,7 +28,7 @@ const CreateComment = ({ blog_id , fetchBlog}) => {
                 }
             });
             handleCloseModal(true)
-            fetchBlog()
+            getComments()
         } catch (error) {
             setError(error?.response?.message)
         }

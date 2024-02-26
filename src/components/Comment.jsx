@@ -26,7 +26,7 @@ export const Comment = ({ id }) => {
 
     useEffect(() => {
         getComments();
-    }, [id]);
+    }, [id , getComments]);
 
     const toggleLike = async (commentId, isLiked) => {
         try {
