@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('comment');
             $table->string('user_id');
             $table->string('blog_id');
-            $table->string('like')->nullable();
+            $table->integer('like')->default(0);
             $table->timestamps();
         });
     }

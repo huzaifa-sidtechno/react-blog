@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BlogList from './BlogList';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [data,setData] = useState('')
-  
+  const navigate = useNavigate()
   const token = localStorage.getItem('userToken');
+  useEffect(() => {
+    console.log(token);
+    if(!token){
+      navigate("/login")
+    }
+  }, [token]);
 
   return (
     <div>

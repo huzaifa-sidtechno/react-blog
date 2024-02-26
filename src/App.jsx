@@ -37,10 +37,10 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/blog/:id" element={<SingelBlog />} />
           <Route path="/blog-edit/:id" element={<EditBlogPost />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           {token ? (<>
-            <Route path="/blog-post" element={<BlogPost />} /></>) : (<><Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-            </>)}
+            <Route path="/blog-post" element={<BlogPost />} /></>) : (<></>)}
         </Routes>
         <Footer />
       </div>
